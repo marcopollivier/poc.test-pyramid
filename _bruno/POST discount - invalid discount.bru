@@ -1,0 +1,28 @@
+meta {
+  name: POST discount - invalid discount
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/discount
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "price": 100.0,
+    "discount": 150.0
+  }
+}
+
+tests {
+  test("should return 400", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+  
+  test("should return error message", function() {
+    expect(res.getBody().error).to.contain("discount must be between 0 and 100");
+  });
+}

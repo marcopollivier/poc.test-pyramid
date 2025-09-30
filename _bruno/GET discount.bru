@@ -1,0 +1,26 @@
+meta {
+  name: GET discount
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/discount?price=100&discount=10
+  body: none
+  auth: none
+}
+
+params:query {
+  price: 100
+  discount: 10
+}
+
+tests {
+  test("should return 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("should calculate discount correctly", function() {
+    expect(res.getBody().final_price).to.equal(90);
+  });
+}

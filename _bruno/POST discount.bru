@@ -1,0 +1,28 @@
+meta {
+  name: POST discount
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/discount
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "price": 100.0,
+    "discount": 10.0
+  }
+}
+
+tests {
+  test("should return 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("should calculate discount correctly", function() {
+    expect(res.getBody().final_price).to.equal(90);
+  });
+}

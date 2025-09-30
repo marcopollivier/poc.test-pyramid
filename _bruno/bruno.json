@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "POC Test Pyramid",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

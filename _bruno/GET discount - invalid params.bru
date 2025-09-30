@@ -1,0 +1,26 @@
+meta {
+  name: GET discount - invalid params
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:8080/discount?price=abc&discount=10
+  body: none
+  auth: none
+}
+
+params:query {
+  price: abc
+  discount: 10
+}
+
+tests {
+  test("should return 400", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+  
+  test("should return error message", function() {
+    expect(res.getBody().error).to.contain("invalid price");
+  });
+}

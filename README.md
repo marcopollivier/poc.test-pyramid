@@ -58,3 +58,4 @@ go test ./service/... -v
 
 - **PostgreSQL**: Banco de dados na porta 5432
 - **Kafka**: Message broker na porta 9092 (KRaft mode)
+- **Kafka UI**: Interface web na porta 8090
