@@ -1,21 +1,46 @@
 package service
 
-import "errors"
+import (
+	"github.com/marcopollivier/poc.test-pyramid/messaging"
+	"github.com/marcopollivier/poc.test-pyramid/model"
+	"github.com/marcopollivier/poc.test-pyramid/repository"
+)
 
-type PriceService struct{}
+type PriceService struct {
+	calculator *PriceCalculator
+	repo       *repository.DiscountRepository
+	publisher  *messaging.KafkaPublisher
+}
 
-func NewPriceService() *PriceService {
-	return &PriceService{}
+func NewPriceService(repo *repository.DiscountRepository, publisher *messaging.KafkaPublisher) *PriceService {
+	return &PriceService{
+		calculator: NewPriceCalculator(),
+		repo:       repo,
+		publisher:  publisher,
+	}
 }
 
 func (ps *PriceService) CalculateDiscount(price float64, discountPercent float64) (float64, error) {
-	if price < 0 {
-		return 0, errors.New("price cannot be negative")
-	}
-	if discountPercent < 0 || discountPercent > 100 {
-		return 0, errors.New("discount must be between 0 and 100")
+	finalPrice, err := ps.calculator.Calculate(price, discountPercent)
+	if err != nil {
+		return 0, err
 	}
 	
-	discount := price * (discountPercent / 100)
-	return price - discount, nil
+	// Salvar no banco
+	discountModel := &model.Discount{
+		Price:      price,
+		Discount:   discountPercent,
+		FinalPrice: finalPrice,
+	}
+	
+	if err := ps.repo.Save(discountModel); err != nil {
+		return 0, err
+	}
+	
+	// Publicar no Kafka
+	if err := ps.publisher.PublishDiscount(discountModel); err != nil {
+		return 0, err
+	}
+	
+	return finalPrice, nil
 }

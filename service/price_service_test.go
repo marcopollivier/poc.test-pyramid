@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestPriceService_CalculateDiscount(t *testing.T) {
-	ps := NewPriceService()
+func TestPriceCalculator_Calculate(t *testing.T) {
+	pc := NewPriceCalculator()
 
 	tests := []struct {
 		name            string
@@ -60,7 +60,7 @@ func TestPriceService_CalculateDiscount(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := ps.CalculateDiscount(tt.price, tt.discountPercent)
+			result, err := pc.Calculate(tt.price, tt.discountPercent)
 
 			if tt.expectError {
 				if err == nil {
