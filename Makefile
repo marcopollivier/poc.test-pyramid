@@ -1,4 +1,4 @@
-.PHONY: up down build run test
+.PHONY: up down build run test test-unit test-integration
 
 up:
 	docker compose up -d
@@ -15,6 +15,13 @@ run: up
 
 test:
 	go test ./... -v
+
+test-unit:
+	go test ./service/... -v
+
+test-integration: up
+	sleep 10
+	go test ./integration_test/... -v
 
 clean:
 	docker compose down -v

@@ -1,6 +1,23 @@
 version: '3.8'
 
 services:
+  app:
+    image: golang:1.24.1
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: sleep infinity
+    depends_on:
+      - postgres
+      - kafka
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=testpyramid
+      - KAFKA_BROKER=kafka:29092
+
   postgres:
     image: postgres:15
     environment:

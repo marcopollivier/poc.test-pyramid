@@ -5,7 +5,8 @@ Proof of Concept para demonstrar a pirâmide de testes em Go com PostgreSQL e Ka
 ## Pré-requisitos
 
 - Docker e Docker Compose
-- Go 1.21+
+- Go 1.24.1+
+- VS Code com extensão Dev Containers (opcional)
 
 ## Como executar
 
@@ -24,11 +25,32 @@ make run
 make down
 ```
 
+## Desenvolvimento com Dev Containers
+
+Para um ambiente de desenvolvimento consistente, use Dev Containers:
+
+1. Abra o projeto no VS Code
+2. Instale a extensão "Dev Containers"
+3. Clique em "Reopen in Container" quando aparecer o popup
+4. Ou use `Cmd+Shift+P` → "Dev Containers: Reopen in Container"
+
+Veja [DEVCONTAINER.md](DEVCONTAINER.md) para mais detalhes.
+
 ## Testes
 
 ### Testes Unitários
 ```bash
-go test ./service/... -v
+make test-unit
+```
+
+### Testes de Integração
+```bash
+make test-integration
+```
+
+### Todos os Testes
+```bash
+make test
 ```
 
 ## API Endpoints
@@ -52,6 +74,8 @@ go test ./service/... -v
 - `messaging/` - Publisher do Kafka
 - `model/` - Modelos de dados
 - `config/` - Configurações
+- `integration_test/` - Testes de integração
+- `.devcontainer/` - Configuração do Dev Container
 - `docker-compose.yml` - Infraestrutura local
 
 ## Infraestrutura
