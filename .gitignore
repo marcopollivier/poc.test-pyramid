@@ -13,3 +13,6 @@
 
 # Go workspace file
 go.work
+
+# Project binary
+poc.test-pyramid
