@@ -53,6 +53,30 @@ make test-integration
 make test
 ```
 
+## Fluxo da Aplicação
+
+```mermaid
+graph TD
+    A[Cliente HTTP] --> B[Handler]
+    B --> C[Service]
+    C --> D[Repository]
+    D --> E[(PostgreSQL)]
+    C --> F[Kafka Publisher]
+    F --> G[Kafka Broker]
+    
+    subgraph "Camadas"
+        B
+        C
+        D
+        F
+    end
+    
+    subgraph "Infraestrutura"
+        E
+        G
+    end
+```
+
 ## API Endpoints
 
 ### POST /discount
